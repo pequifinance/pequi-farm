@@ -6,26 +6,17 @@
   "author": "Gustavo <gustavo@obex.pw>",
   "license": "MIT",
   "scripts": {
-    "generate-types": "typechain --target=truffle-v5 'build/contracts/*.json'",
-    "postinstall": "truffle compile && yarn generate-types",
-    "migrate": "tsc -p ./tsconfig.migrate.json --out-dir ./migrations && truffle migrate",
-    "typecheck": "tsc --noEmit",
+    "build": "truffle compile",
+    "migrate": "truffle migrate",
     "test": "truffle test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.1.0",
+    "@openzeppelin/contracts": "^3.4.0",
     "@openzeppelin/contracts-upgradeable": "^4.1.0",
-    "@openzeppelin/test-helpers": "^0.5.11",
+    "@openzeppelin/test-helpers": "^0.5.6",
     "@openzeppelin/truffle-upgrades": "^1.7.0",
     "@truffle/hdwallet-provider": "^1.4.0",
     "@typechain/truffle-v5": "^5.0.0",
-    "@types/bn.js": "^5.1.0",
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "^15.3.0",
-    "@types/web3": "^1.2.2",
-    "truffle": "^5.1.58",
-    "typechain": "5.0.0",
-    "typescript": "4.2.4"
+    "truffle": "^5.1.58"
   }
 }

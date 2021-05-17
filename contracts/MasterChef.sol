@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.6.12;
 
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./libs/IBEP20.sol";
 import "./libs/SafeBEP20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 import "./PequiToken.sol";
 
@@ -155,7 +154,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     // Return reward multiplier over the given _from to _to block.
     function getMultiplier(uint256 _from, uint256 _to)
         public
-        view
+        pure
         returns (uint256)
     {
         return _to.sub(_from).mul(BONUS_MULTIPLIER);
