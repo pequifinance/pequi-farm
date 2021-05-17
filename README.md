@@ -1,4 +1,4 @@
-# Pequi Farm 🟡
+# 🟡 Pequi Farm
 
 https://pequi.finance Feel free to read the code.
 
