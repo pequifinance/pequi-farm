@@ -16,7 +16,7 @@ import "./PequiToken.sol";
 // distributed and the community can show to govern itself.
 //
 // Have fun reading it. Hopefully it's bug-free. God bless.
-contract MasterChefV2 is Ownable, ReentrancyGuard {
+contract MasterChef is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     using SafeBEP20 for IBEP20;
 
@@ -49,7 +49,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     // The PEQUI TOKEN!
     PequiToken public pequi;
     // Dev address.
-    address public devaddr;
+    address public devAddress;
     // PEQUI tokens created per block.
     uint256 public pequiPerBlock;
     // Bonus muliplier for early pequi makers.
@@ -79,13 +79,13 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
 
     constructor(
         PequiToken _pequi,
-        address _devaddr,
+        address _devAddress,
         address _feeAddress,
         uint256 _pequiPerBlock,
         uint256 _startBlock
     ) public {
         pequi = _pequi;
-        devaddr = _devaddr;
+        devAddress = _devAddress;
         feeAddress = _feeAddress;
         pequiPerBlock = _pequiPerBlock;
         startBlock = _startBlock;
@@ -208,7 +208,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
             multiplier.mul(pequiPerBlock).mul(pool.allocPoint).div(
                 totalAllocPoint
             );
-        pequi.mint(devaddr, pequiReward.div(10));
+        pequi.mint(devAddress, pequiReward.div(10));
         pequi.mint(address(this), pequiReward);
         pool.accPequiPerShare = pool.accPequiPerShare.add(
             pequiReward.mul(1e12).div(lpSupply)
@@ -293,14 +293,16 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     }
 
     // Update dev address by the previous dev.
-    function dev(address _devaddr) public {
-        require(msg.sender == devaddr, "dev: wut?");
-        devaddr = _devaddr;
-        emit SetDevAddress(msg.sender, _devaddr);
+    function setDevAddress(address _devAddress) public {
+        require(msg.sender == devAddress, "setDevAddress: FORBIDDEN");
+        require(_devAddress != address(0), "setDevAddress: ZERO");
+        devAddress = _devAddress;
+        emit SetDevAddress(msg.sender, _devAddress);
     }
 
     function setFeeAddress(address _feeAddress) public {
         require(msg.sender == feeAddress, "setFeeAddress: FORBIDDEN");
+        require(_feeAddress != address(0), "setFeeAddress: ZERO");
         feeAddress = _feeAddress;
         emit SetFeeAddress(msg.sender, _feeAddress);
     }

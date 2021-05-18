@@ -4,13 +4,20 @@ const PequiToken = artifacts.require("PequiToken");
 const MasterChef = artifacts.require("MasterChef");
 const MockBEP20 = artifacts.require("libs/MockBEP20");
 
-contract("MasterChef", ([alice, bob, carol, dev, fee, owner]) => {
+contract("MasterChef", ([romeu, michael, victor, dev, fee, owner]) => {
   beforeEach(async () => {
     this.zeroAddress = "0x0000000000000000000000000000000000000000";
     this.pequi = await PequiToken.new({ from: owner });
-    this.chef = await MasterChef.new(this.pequi.address, "100", "1000", {
-      from: owner,
-    });
+    this.chef = await MasterChef.new(
+      this.pequi.address,
+      owner,
+      owner,
+      "100",
+      "1000",
+      {
+        from: owner,
+      }
+    );
 
     await this.pequi.transferOwnership(this.chef.address, { from: owner });
 
@@ -27,20 +34,20 @@ contract("MasterChef", ([alice, bob, carol, dev, fee, owner]) => {
       from: owner,
     });
 
-    await this.lp1.transfer(alice, "2000", { from: owner });
-    await this.lp2.transfer(alice, "2000", { from: owner });
-    await this.lp3.transfer(alice, "2000", { from: owner });
-    await this.lp4.transfer(alice, "2000", { from: owner });
+    await this.lp1.transfer(romeu, "2000", { from: owner });
+    await this.lp2.transfer(romeu, "2000", { from: owner });
+    await this.lp3.transfer(romeu, "2000", { from: owner });
+    await this.lp4.transfer(romeu, "2000", { from: owner });
 
-    await this.lp1.transfer(bob, "2000", { from: owner });
-    await this.lp2.transfer(bob, "2000", { from: owner });
-    await this.lp3.transfer(bob, "2000", { from: owner });
-    await this.lp4.transfer(bob, "2000", { from: owner });
+    await this.lp1.transfer(michael, "2000", { from: owner });
+    await this.lp2.transfer(michael, "2000", { from: owner });
+    await this.lp3.transfer(michael, "2000", { from: owner });
+    await this.lp4.transfer(michael, "2000", { from: owner });
 
-    await this.lp1.transfer(carol, "2000", { from: owner });
-    await this.lp2.transfer(carol, "2000", { from: owner });
-    await this.lp3.transfer(carol, "2000", { from: owner });
-    await this.lp4.transfer(carol, "2000", { from: owner });
+    await this.lp1.transfer(victor, "2000", { from: owner });
+    await this.lp2.transfer(victor, "2000", { from: owner });
+    await this.lp3.transfer(victor, "2000", { from: owner });
+    await this.lp4.transfer(victor, "2000", { from: owner });
   });
 
   it("deposit fee", async () => {
@@ -50,22 +57,22 @@ contract("MasterChef", ([alice, bob, carol, dev, fee, owner]) => {
     await this.chef.setFeeAddress(fee, { from: owner });
     assert.equal(await this.chef.feeAddress(), fee);
 
-    await this.chef.add("1000", this.lp1.address, "400", "3600", true, {
+    await this.chef.add("1000", this.lp1.address, "400", true, {
       from: owner,
     });
-    await this.chef.add("2000", this.lp2.address, "0", "3600", true, {
+    await this.chef.add("2000", this.lp2.address, "0", true, {
       from: owner,
     });
 
-    await this.lp1.approve(this.chef.address, "1000", { from: alice });
-    await this.lp2.approve(this.chef.address, "1000", { from: alice });
+    await this.lp1.approve(this.chef.address, "1000", { from: romeu });
+    await this.lp2.approve(this.chef.address, "1000", { from: romeu });
 
     assert.equal((await this.lp1.balanceOf(fee)).toString(), "0");
-
+    await this.chef.deposit(0, "100", { from: romeu });
     assert.equal((await this.lp1.balanceOf(fee)).toString(), "4");
 
     assert.equal((await this.lp2.balanceOf(fee)).toString(), "0");
-
+    await this.chef.deposit(1, "100", { from: romeu });
     assert.equal((await this.lp2.balanceOf(fee)).toString(), "0");
   });
 
